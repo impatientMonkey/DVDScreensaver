@@ -54,10 +54,11 @@ void animationThreadFunc(std::string text){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     const int screenWidth = csbi.dwSize.X;
+    const int bannerHeight = 3;
     const int screenHeight = csbi.dwSize.Y - 2; //avoid top and input line
 
     double currentX = 0.0;
-    double currentY = 1.0; // starts the animation below static message
+    double currentY = static_cast<double>(bannerHeight); // starts the animation below static message
 
     //animation moves in random directions 
     int targetX = rand() % (screenWidth - text.length());
@@ -132,7 +133,9 @@ void inputThreadFunc(){
     {
         std::lock_guard<std::mutex> lock(consoleMutex);
         setCursorPosition(0, 0);
-        std::cout << "Displaying a marquee console!" << std::flush;
+        std::cout << "******************************\n" << std::flush;
+        std::cout << "* Displaying a marquee console! * \n" << std::flush;
+        std::cout << "******************************\n" << std::flush;
     }
 
     while(!stopProgram){
